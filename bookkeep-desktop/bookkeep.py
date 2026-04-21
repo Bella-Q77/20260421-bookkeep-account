@@ -149,6 +149,16 @@ class BookkeepApp:
         self.content_frame = ttk.Frame(self.main_frame)
         self.content_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(10, 0))
         
+        self.ledger_bar = ttk.Frame(self.content_frame)
+        
+        self.ledger_bar_label = ttk.Label(
+            self.ledger_bar, 
+            text="", 
+            font=('Microsoft YaHei', 10),
+            foreground='#07C160'
+        )
+        self.ledger_bar_label.pack(pady=5)
+        
         self.pages = {}
         self.create_dashboard_page()
         self.create_records_page()
@@ -567,8 +577,12 @@ class BookkeepApp:
             else:
                 btn.configure(style='Sidebar.TButton')
         
+        self.ledger_bar.pack_forget()
         for p in self.pages.values():
             p.pack_forget()
+        
+        if page != "settings":
+            self.ledger_bar.pack(fill=tk.X, pady=(0, 5))
         
         self.pages[page].pack(fill=tk.BOTH, expand=True)
         
@@ -1026,6 +1040,7 @@ class BookkeepApp:
         
         if ledger:
             self.ledger_label.config(text=ledger[0])
+            self.ledger_bar_label.config(text=f"📒 当前账本: {ledger[0]}")
             
     def on_ledger_changed(self, event):
         ledger_name = self.settings_ledger_var.get()
